@@ -154,6 +154,9 @@ elif page == "EDA":
 elif page == "Business Analysis":
     st.header("Business Analysis")
 
+    month_names = ["Jan","Feb","Mar","Apr","May","Jun",
+                   "Jul","Aug","Sep","Oct","Nov","Dec"]
+
     if "combined_revenue" in business_df.columns:
         st.subheader("Best Time to Sell Solar Energy")
         best_months = business_df.groupby("month")["combined_revenue"].mean().sort_index()
