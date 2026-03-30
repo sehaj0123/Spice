@@ -12,7 +12,7 @@ page = st.sidebar.selectbox(
     ["Overview", "EDA", "Modeling", "XAI"]
 )
 
-df = pd.read_csv("your_merged_dataset.csv")
+df = pd.read_csv("final_cleaned_dataset.csv")
 
 if page == "Overview":
     st.header("Project Overview")
