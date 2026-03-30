@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -21,8 +20,19 @@ if page == "Overview":
 elif page == "EDA":
     st.header("EDA")
 
+    monthly_total = df.groupby("month")["combined_production"].mean().sort_index()
+
+    month_names = ["Jan","Feb","Mar","Apr","May","Jun",
+                   "Jul","Aug","Sep","Oct","Nov","Dec"]
+
+    labels = [month_names[m-1] for m in monthly_total.index]
+
     fig, ax = plt.subplots()
-    ax.scatter(df["solar_radiation"], df["Production"])
+    ax.bar(labels, monthly_total.values)
+    ax.set_title("Monthly Solar Production (Full Year)")
+    ax.set_xlabel("Month")
+    ax.set_ylabel("Average Production")
+
     st.pyplot(fig)
 
 elif page == "Modeling":
@@ -31,10 +41,4 @@ elif page == "Modeling":
 
 elif page == "XAI":
     st.header("XAI")
-
-    features = ["solar_radiation", "Mean Temp", "Snow"]
-    importance = [0.5, 0.3, 0.2]
-
-    fig, ax = plt.subplots()
-    ax.bar(features, importance)
-    st.pyplot(fig)
+    st.write("Feature importance, actual vs predicted, and residual plots were created in the notebook.")
