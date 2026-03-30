@@ -237,7 +237,7 @@ elif page == "Modeling":
         st.write(f"**R² Score:** {r2:.2f}")
         st.write("The model uses environmental and seasonal features to predict solar production.")
 
-        # ✅ Actual vs Predicted
+        # Actual vs Predicted
         st.subheader("Actual vs Predicted Solar Production")
 
         fig, ax = plt.subplots(figsize=(6, 6))
@@ -255,7 +255,7 @@ elif page == "Modeling":
 
         st.write("This plot shows how close predictions are to actual values.")
 
-        # ✅ Prediction UI
+        #  Prediction UI
         st.subheader("Predict Solar Production")
 
 solar_radiation = st.number_input("Solar Radiation", value=15.0)
