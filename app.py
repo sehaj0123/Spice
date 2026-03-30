@@ -106,7 +106,7 @@ elif page == "EDA":
 
     st.subheader("Monthly Total Solar Production")
     monthly_total = business_df.groupby("month")["combined_production"].mean().sort_index()
-    labels = [month_names[m - 1] for m in monthly_total.index]
+    labels = [month_names[int(m) - 1] for m in monthly_total.index]
 
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.bar(labels, monthly_total.values)
@@ -119,7 +119,7 @@ elif page == "EDA":
 
     st.subheader("Visser Monthly Production")
     visser_monthly = visser.groupby("month")["Production"].mean().sort_index()
-    labels = [month_names[m - 1] for m in visser_monthly.index]
+    labels = [month_names[int(m) - 1] for m in bissell_monthly.index]
 
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.bar(labels, visser_monthly.values)
@@ -132,7 +132,7 @@ elif page == "EDA":
 
     st.subheader("Bissell Monthly Production")
     bissell_monthly = bissell.groupby("month")["Bissell_total_filled"].mean().sort_index()
-    labels = [month_names[m - 1] for m in bissell_monthly.index]
+    labels = [month_names[int(m) - 1] for m in visser_monthly.index]
 
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.bar(labels, bissell_monthly.values)
