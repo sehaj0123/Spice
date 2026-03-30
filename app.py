@@ -19,12 +19,20 @@ page = st.sidebar.selectbox(
 # Load files
 business_df = pd.read_csv("final_cleaned_dataset.csv")
 df = pd.read_csv("merged_without_price.csv")
+visser = pd.read_csv("Visser_final_cleaned_filled (1).csv")
+bissell = pd.read_csv("Bissell_inverters_production.csv")
 
 # Fix dates
 if "date" in business_df.columns:
     business_df["date"] = pd.to_datetime(business_df["date"])
 if "date" in df.columns:
     df["date"] = pd.to_datetime(df["date"])
+
+visser["date"] = pd.to_datetime(visser["date"])
+bissell["date"] = pd.to_datetime(bissell["date"])
+
+visser["month"] = visser["date"].dt.month
+bissell["month"] = bissell["date"].dt.month
 
 # Make sure month exists
 if "month" not in business_df.columns and "date" in business_df.columns:
@@ -100,6 +108,35 @@ elif page == "EDA":
     ax.set_xlabel("Month")
     ax.set_ylabel("Average Production")
     st.pyplot(fig)
+        st.subheader("Visser Monthly Production")
+
+    visser_monthly = visser.groupby("month")["Production"].mean().sort_index()
+
+    month_names = ["Jan","Feb","Mar","Apr","May","Jun",
+                   "Jul","Aug","Sep","Oct","Nov","Dec"]
+    labels = [month_names[m-1] for m in visser_monthly.index]
+
+    fig, ax = plt.subplots(figsize=(10,5))
+    ax.bar(labels, visser_monthly.values)
+    ax.set_title("Visser Monthly Production")
+    ax.set_xlabel("Month")
+    ax.set_ylabel("Average Production")
+    st.pyplot(fig)
+
+    st.write("This chart shows average monthly solar production at the Visser site.")
+    st.subheader("Bissell Monthly Production")
+
+    bissell_monthly = bissell.groupby("month")["Bissell_total_filled"].mean().sort_index()
+    labels = [month_names[m-1] for m in bissell_monthly.index]
+
+    fig, ax = plt.subplots(figsize=(10,5))
+    ax.bar(labels, bissell_monthly.values)
+    ax.set_title("Bissell Monthly Production")
+    ax.set_xlabel("Month")
+    ax.set_ylabel("Average Production")
+    st.pyplot(fig)
+
+    st.write("This chart shows average monthly solar production at the Bissell site.")
 
     st.subheader("Solar Radiation vs Production")
     if "solar_radiation" in df.columns and "Production" in df.columns:
@@ -116,7 +153,7 @@ elif page == "EDA":
         temp_df["temp_range"] = pd.cut(
             temp_df["Mean Temp (°C)"],
             bins=[-30, -10, 0, 10, 20, 30],
-            labels=["Very Cold", "Cold", "Mild", "Warm", "Hot"]
+            labels=["-30 to -10", "-10 to 0", "0 to 10", "10 to 20", "20 to 30"]
         )
         temp_prod = temp_df.groupby("temp_range", observed=False)["Production"].mean()
 
@@ -133,7 +170,7 @@ elif page == "EDA":
         wind_df["wind_range"] = pd.cut(
             wind_df["wind_speed"],
             bins=[0, 3, 5, 7, 10, 15],
-            labels=["Very Low", "Low", "Moderate", "High", "Very High"]
+            labels=["0-3", "3-5", "5-7", "7-10", "10-15"]
         )
         wind_prod = wind_df.groupby("wind_range", observed=False)["Production"].mean()
 
