@@ -258,40 +258,39 @@ elif page == "Modeling":
         # ✅ Prediction UI
         st.subheader("Predict Solar Production")
 
-        solar_radiation = st.number_input("Solar Radiation", value=15.0)
-        solar_clear_sky = st.number_input("Solar Clear Sky Radiation", value=20.0)
-        solar_ratio = st.number_input("Solar Ratio", value=0.75)
-        wind_speed = st.number_input("Wind Speed", value=5.0)
-        temperature_nasa_y = st.number_input("NASA Temperature", value=10.0)
-        mean_temp = st.number_input("Mean Temp (°C)", value=10.0)
-        total_rain = st.number_input("Total Rain (mm)", value=0.0)
-        total_snow = st.number_input("Total Snow (cm)", value=0.0)
-        month_input = st.number_input("Month", min_value=1, max_value=12, value=6)
-        dayofyear_input = st.number_input("Day of Year", min_value=1, max_value=366, value=180)
+solar_radiation = st.number_input("Solar Radiation", value=15.0)
+mean_temp = st.number_input("Temperature (°C)", value=10.0)
+wind_speed = st.number_input("Wind Speed", value=5.0)
+total_snow = st.number_input("Snow (cm)", value=0.0)
+month_input = st.number_input("Month", min_value=1, max_value=12, value=6)
 
-        input_data = pd.DataFrame([{
-            "solar_radiation": solar_radiation,
-            "solar_clear_sky": solar_clear_sky,
-            "solar_ratio": solar_ratio,
-            "wind_speed": wind_speed,
-            "temperature_nasa_y": temperature_nasa_y,
-            "Mean Temp (°C)": mean_temp,
-            "Total Rain (mm)": total_rain,
-            "Total Snow (cm)": total_snow,
-            "month": month_input,
-            "dayofyear": dayofyear_input
-        }])
+# auto-generate remaining features
+solar_clear_sky = solar_radiation * 1.2
+solar_ratio = solar_radiation / solar_clear_sky if solar_clear_sky != 0 else 0
+temperature_nasa_y = mean_temp
+total_rain = 0
+dayofyear_input = month_input * 30
 
-        input_data = input_data[available_features]
+input_data = pd.DataFrame([{
+    "solar_radiation": solar_radiation,
+    "solar_clear_sky": solar_clear_sky,
+    "solar_ratio": solar_ratio,
+    "wind_speed": wind_speed,
+    "temperature_nasa_y": temperature_nasa_y,
+    "Mean Temp (°C)": mean_temp,
+    "Total Rain (mm)": total_rain,
+    "Total Snow (cm)": total_snow,
+    "month": month_input,
+    "dayofyear": dayofyear_input
+}])
 
-        if st.button("Predict Solar Production"):
-            prediction = rf.predict(input_data)[0]
-            st.success(f"Predicted Solar Production: {prediction:.2f}")
+input_data = input_data[available_features]
 
-            st.write("Prediction is based on the trained Random Forest model.")
+if st.button("Predict Solar Production"):
+    prediction = rf.predict(input_data)[0]
+    st.success(f"Predicted Solar Production: {prediction:.2f}")
 
-    else:
-        st.error("Modeling columns are missing from merged_without_price.csv")
+    st.write("Prediction is based on user-friendly inputs and model estimation.")
 
 elif page == "XAI":
     st.header("Explainable AI (XAI)")
