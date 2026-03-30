@@ -17,7 +17,7 @@ page = st.sidebar.selectbox(
 )
 
 # Load files
-business_df = pd.read_csv("final_cleane_dataset.csv")
+business_df = pd.read_csv("final_cleaned_dataset.csv")
 df = pd.read_csv("merged_without_price.csv")
 
 # Fix dates
