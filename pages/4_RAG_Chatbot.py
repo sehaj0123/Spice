@@ -6,7 +6,7 @@ import torch
 
 st.set_page_config(page_title="SPICE RAG Chatbot", page_icon="💬", layout="wide")
 
-st.title("💬 SPICE RAG Chatbot")
+st.title("SPICE RAG Chatbot")
 st.write("Ask questions about the SPICE solar project data.")
 
 # -----------------------------------------------------------------------------
